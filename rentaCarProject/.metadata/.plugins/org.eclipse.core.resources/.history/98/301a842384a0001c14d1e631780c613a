@@ -1,0 +1,23 @@
+package com.turkcell.rentACar.dataAccess.abstracts;
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import com.turkcell.rentACar.entities.concretes.CarRental;
+
+@Repository
+public interface CarRentalDao extends JpaRepository<CarRental, Integer> {
+	List<CarRental> getAllByCar_CarId(Integer id);
+
+	@Query(value ="From CarRental c where c.startDate<=:startDate and c.returnDate=>:startDate and c.startDate<=:returnDate and c.returnDate=>:returnDate and c.carId=:carId")
+	List<CarRental> getRentalInformationOfTheVehicleOnTheSpecifiedDate(@Param("startDate")LocalDate startDate,@Param("returnDate") LocalDate returnDate,
+			@Param("carId") int carId);
+
+	// CarRental getByCar_CarIdAndReturnDate(int carId,Date returnDate);
+}
